@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSL-Canary · Virtual Master</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(ellipse at center, #0a0e27 0%, #000000 100%);
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* خلفية نجوم متحركة */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(2px 2px at 50px 160px, #ddd, transparent),
+                radial-gradient(2px 2px at 90px 40px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 130px 80px, #fff, transparent),
+                radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(2px 2px at 220px 110px, #eee, transparent),
+                radial-gradient(2px 2px at 280px 50px, rgba(255,255,255,0.5), transparent);
+            background-size: 300px 300px;
+            animation: stars 25s linear infinite;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        @keyframes stars {
+            from { transform: translateY(0); }
+            to { transform: translateY(-300px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 55px 65px;
+            background: rgba(10, 14, 39, 0.65);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 40px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow:
+                0 0 70px rgba(0, 255, 255, 0.08),
+                inset 0 0 70px rgba(0, 255, 255, 0.04);
+            animation: glowPulse 4s ease-in-out infinite alternate;
+            max-width: 92%;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.08), inset 0 0 40px rgba(0, 255, 255, 0.02); }
+            100% { box-shadow: 0 0 90px rgba(0, 255, 255, 0.2), inset 0 0 90px rgba(0, 255, 255, 0.06); }
+        }
+
+        /* الشعار العلوي */
+        .brand {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00f0ff, #a855f7, #00f0ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 5s ease-in-out infinite;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        .brand-sub {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95rem;
+            color: rgba(0, 240, 255, 0.5);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+            padding-bottom: 12px;
+            display: inline-block;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* الأيقونة الرئيسية */
+        .empty-icon {
+            font-size: 5.5rem;
+            margin: 10px 0 15px 0;
+            display: block;
+            animation: floatIcon 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.15));
+        }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        /* النص الرئيسي */
+        .main-message {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 3px;
+            text-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+            margin-bottom: 8px;
+        }
+
+        .main-message span {
+            color: rgba(0, 240, 255, 0.6);
+            font-weight: 300;
+        }
+
+        .sub-message {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+            font-weight: 500;
+        }
+
+        .line-deco {
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+            margin: 10px auto 30px auto;
+            border-radius: 2px;
+            opacity: 0.4;
+        }
+
+        /* زر التواصل */
+        .contact-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 50px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #00c6ff, #7b2ffc);
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 35px rgba(0, 198, 255, 0.25);
+            text-decoration: none;
+            overflow: hidden;
+        }
+
+        .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #00f0ff, #a855f7, #00f0ff);
+            background-size: 300% 300%;
+            border-radius: 62px;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite;
+            filter: blur(10px);
+        }
+
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.07) translateY(-3px);
+            box-shadow: 0 0 60px rgba(0, 198, 255, 0.5);
+        }
+
+        .contact-btn:active {
+            transform: scale(0.95);
+        }
+
+        .contact-btn .icon {
+            font-size: 1.6rem;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-btn:hover .icon {
+            transform: rotate(-10deg) scale(1.1);
+        }
+
+        /* أيقونة Telegram */
+        .telegram-icon {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            padding: 4px 6px;
+            font-size: 1.4rem;
+        }
+
+        /* التذيير */
+        .footer {
+            margin-top: 30px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.1);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .footer span {
+            color: rgba(0, 240, 255, 0.15);
+        }
+
+        /* استجابة للشاشات الصغيرة */
+        @media (max-width: 600px) {
+            .container {
+                padding: 35px 25px;
+                border-radius: 28px;
+            }
+            .brand {
+                font-size: 1.6rem;
+            }
+            .brand-sub {
+                font-size: 0.75rem;
+                letter-spacing: 5px;
+            }
+            .empty-icon {
+                font-size: 4rem;
+            }
+            .main-message {
+                font-size: 2rem;
+            }
+            .sub-message {
+                font-size: 0.85rem;
+                letter-spacing: 4px;
+            }
+            .contact-btn {
+                padding: 14px 32px;
+                font-size: 1.1rem;
+                gap: 10px;
+            }
+            .contact-btn .icon {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 25px 18px;
+            }
+            .main-message {
+                font-size: 1.6rem;
+            }
+            .contact-btn {
+                padding: 12px 24px;
+                font-size: 0.95rem;
+                letter-spacing: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- الشعار -->
+        <div class="brand">⚡ SSL-Canary</div>
+        <div class="brand-sub">&amp; Virtual Master</div>
+
+        <!-- أيقونة الملفات الفارغة -->
+        <span class="empty-icon">📂</span>
+
+        <!-- الرسالة الأساسية -->
+        <div class="main-message">
+            No Files <span>Here</span> Yet !
+        </div>
+        <div class="sub-message">• repository is empty •</div>
+
+        <div class="line-deco"></div>
+
+        <!-- زر التواصل مع المطور -->
+        <a href="https://t.me/JAKEL_V7x" target="_blank" class="contact-btn" id="contactBtn">
+            <span class="icon">📨</span>
+            Contact The Developer
+            <span class="telegram-icon">✈</span>
+        </a>
+
+        <div class="footer">
+            <span>✦</span> v2.0.1 · secure <span>✦</span>
+        </div>
+    </div>
+
+    <script>
+        // تأثير تفاعلي عند النقر على الزر
+        document.getElementById('contactBtn').addEventListener('click', function(e) {
+            // تغيير النص مؤقتاً مع تأثير
+            const originalHTML = this.innerHTML;
+            this.innerHTML = '<span class="icon">⏳</span> Redirecting...';
+            this.style.opacity = '0.7';
+            this.style.transform = 'scale(0.98)';
+
+            setTimeout(() => {
+                this.innerHTML = originalHTML;
+                this.style.opacity = '1';
+                this.style.transform = '';
+            }, 1200);
+        });
+
+        // تأثير إضافي: تغيير الأيقونة عند hover على الحاوية
+        const container = document.querySelector('.container');
+        const icon = document.querySelector('.empty-icon');
+
+        container.addEventListener('mouseenter', () => {
+            icon.style.transform = 'scale(1.15) rotate(-5deg)';
+            icon.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        });
+
+        container.addEventListener('mouseleave', () => {
+            icon.style.transform = 'scale(1) rotate(0deg)';
+        });
+    </script>
+
+</body>
+</html>
