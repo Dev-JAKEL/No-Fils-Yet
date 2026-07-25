@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSL-Canary · Virtual Master</title>
+    <title>JL-Files · Fast Download Method</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -23,7 +23,6 @@
             position: relative;
         }
 
-        /* خلفية نجوم متحركة */
         body::before {
             content: '';
             position: absolute;
@@ -72,7 +71,6 @@
             100% { box-shadow: 0 0 90px rgba(0, 255, 255, 0.2), inset 0 0 90px rgba(0, 255, 255, 0.06); }
         }
 
-        /* الشعار العلوي */
         .brand {
             font-family: 'Orbitron', monospace;
             font-size: 2.2rem;
@@ -104,7 +102,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* الأيقونة الرئيسية */
         .empty-icon {
             font-size: 5.5rem;
             margin: 10px 0 15px 0;
@@ -118,7 +115,6 @@
             50% { transform: translateY(-10px) scale(1.05); }
         }
 
-        /* النص الرئيسي */
         .main-message {
             font-family: 'Rajdhani', sans-serif;
             font-size: 2.8rem;
@@ -152,7 +148,6 @@
             opacity: 0.4;
         }
 
-        /* زر التواصل */
         .contact-btn {
             position: relative;
             display: inline-flex;
@@ -214,7 +209,6 @@
             transform: rotate(-10deg) scale(1.1);
         }
 
-        /* أيقونة Telegram */
         .telegram-icon {
             display: inline-block;
             background: rgba(255,255,255,0.1);
@@ -223,7 +217,6 @@
             font-size: 1.4rem;
         }
 
-        /* التذيير */
         .footer {
             margin-top: 30px;
             font-size: 0.7rem;
@@ -236,7 +229,6 @@
             color: rgba(0, 240, 255, 0.15);
         }
 
-        /* استجابة للشاشات الصغيرة */
         @media (max-width: 600px) {
             .container {
                 padding: 35px 25px;
@@ -287,14 +279,12 @@
 <body>
 
     <div class="container">
-        <!-- الشعار -->
-        <div class="brand">⚡ SSL-Canary</div>
-        <div class="brand-sub">&amp; Virtual Master</div>
+    
+        <div class="brand">⚡ JL-Files</div>
+        <div class="brand-sub">&amp; Fast Download Method</div>
 
-        <!-- أيقونة الملفات الفارغة -->
         <span class="empty-icon">📂</span>
 
-        <!-- الرسالة الأساسية -->
         <div class="main-message">
             No Files <span>Here</span> Yet !
         </div>
@@ -302,7 +292,6 @@
 
         <div class="line-deco"></div>
 
-        <!-- زر التواصل مع المطور -->
         <a href="https://t.me/JAKEL_V7x" target="_blank" class="contact-btn" id="contactBtn">
             <span class="icon">📨</span>
             Contact The Developer
@@ -315,9 +304,9 @@
     </div>
 
     <script>
-        // تأثير تفاعلي عند النقر على الزر
+    
         document.getElementById('contactBtn').addEventListener('click', function(e) {
-            // تغيير النص مؤقتاً مع تأثير
+
             const originalHTML = this.innerHTML;
             this.innerHTML = '<span class="icon">⏳</span> Redirecting...';
             this.style.opacity = '0.7';
@@ -330,7 +319,6 @@
             }, 1200);
         });
 
-        // تأثير إضافي: تغيير الأيقونة عند hover على الحاوية
         const container = document.querySelector('.container');
         const icon = document.querySelector('.empty-icon');
 
